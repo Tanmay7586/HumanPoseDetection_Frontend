@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -10,21 +10,27 @@ import {
   Button,
   Text,
   Image,
-  Box
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
-const YogaCard = ({ imageSrc, title, description, price }) => {
+const YogaCard = ({
+  id,
+  imageSrc,
+  gifSrc,
+  title,
+  description,
+  advantages,
+  howToPerform,
+}) => {
+
   return (
-//     <Box
-//     _hover={{ transform: "scale(1.05)", boxShadow: "lg" }} // Scale and shadow effect on hover
-//     transition="all 0.2s"
-//   >
     <Card maxW="sm">
       <CardBody>
         <Image
           src={imageSrc}
           alt={title}
           borderRadius="lg"
+          transition="0.3s ease-in-out"
         />
         <Stack mt="6" spacing="3">
           <Heading size="md">{title}</Heading>
@@ -35,12 +41,24 @@ const YogaCard = ({ imageSrc, title, description, price }) => {
       <CardFooter>
         <ButtonGroup spacing="2">
           <Button variant="solid" colorScheme="blue">
-            See more
+            <Link
+              to={`/try-yoga/${id}`}
+              state={{
+                id,
+                title,
+                imageSrc,
+                gifSrc,
+                description,
+                advantages,
+                howToPerform,
+              }}
+            >
+              Try Yoga
+            </Link>
           </Button>
         </ButtonGroup>
       </CardFooter>
     </Card>
-    // </Box>
   );
 };
 
