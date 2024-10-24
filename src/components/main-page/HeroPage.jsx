@@ -16,19 +16,19 @@ const HeroPage = () => {
           <div className="mx-auto max-w-2xl py-20">
             <div className="hidden sm:mb-8 sm:flex sm:justify-center">
               <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                Explore different yoga poses.{" "}
+                Explore different poses.{" "}
                 <a href="#" className="font-semibold text-indigo-600">
                   <span aria-hidden="true" className="absolute inset-0" />
-                  Yoga Poses <span aria-hidden="true">&rarr;</span>
+                  Yoga & Gym Poses <span aria-hidden="true">&rarr;</span>
                 </a>
               </div>
             </div>
             <div className="">
               <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-3xl text-center">
-                Perfect Your Yoga Poses with AI-Powered Posture Detection
+                Perfect Your Poses with AI-Powered Posture Detection
               </h1>
               <p className="mt-6 text-base leading-8 text-gray-600 text-center">
-                Get instant feedback on your yoga posture and improve alignment.
+                Get instant feedback on your yoga & gym posture and improve alignment.
                 With real-time feedback, you will receive immediate insights on
                 your posture during practice. Our AI-powered posture analysis
                 utilizes advanced technology to analyze and enhance your

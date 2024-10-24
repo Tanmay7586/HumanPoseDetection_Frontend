@@ -19,6 +19,7 @@ const user = {
 const navigation = [
   { name: "Home", href: "#", current: true },
   { name: "Yoga Poses", href: "#yoga-poses", current: false },
+  { name: "Gym Poses", href: "#gym-poses", current: false },
   { name: "How It Works", href: "#", current: false },
 ];
 const userNavigation = [
