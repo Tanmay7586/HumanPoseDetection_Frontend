@@ -7,66 +7,95 @@ import {
   VStack,
   Container,
   useColorModeValue,
+  Spinner,
+  Center,
 } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom"; // Import useLocation from react-router-dom
+import { useLocation } from "react-router-dom";
+import useMediaPipePose from "../hooks/useMediaPipePose";
 
 const YogaCameraPage = () => {
   const videoRef = useRef(null);
-  const location = useLocation(); // Get location from useLocation hook
-  const { title, gifSrc, description } = location.state || {}; // Use optional chaining to avoid errors
-
+  const canvasRef = useRef(null);
+  const location = useLocation();
+  const { title, gifSrc, description } = location.state || {};
   const bgColor = useColorModeValue("gray.50", "gray.800");
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (error) {
-      console.error("Error accessing the camera:", error);
-    }
-  };
-
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach(track => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
+  
+  const { loading, initializePose, stopPose } = useMediaPipePose();
 
   useEffect(() => {
-    startCamera();
-    return () => stopCamera(); // Clean up the camera on unmount
-  }, []);
+    if (videoRef.current && canvasRef.current) {
+      initializePose(videoRef.current, canvasRef.current);
+    }
+
+    // Cleanup function
+    return () => {
+      stopPose();
+    };
+  }, [initializePose]);
+
+  const handleStopPose = () => {
+    stopPose();
+  };
 
   return (
     <Box bg={bgColor} minHeight="100vh" py={8}>
       <Container maxW="6xl">
         <VStack spacing={6} align="start">
           <Heading as="h1" size="lg" color="blue.600">
-            Performing: {title || "Unknown Pose"} {/* Handle undefined title */}
+            Performing: {title || "Unknown Pose"}
           </Heading>
+          
           <Text fontSize="lg" color="gray.600">
-            {description || "No description available."} {/* Handle undefined description */}
+            {description || "No description available."}
           </Text>
-          <Box display="flex" justifyContent="center" mt={4}>
+
+          {loading && (
+            <Center w="100%">
+              <VStack>
+                <Spinner size="xl" color="blue.500" thickness="4px" />
+                <Text mt={2}>Initializing pose detection...</Text>
+              </VStack>
+            </Center>
+          )}
+
+          <Box position="relative" width="100%" maxWidth="600px" margin="0 auto">
             <video
               ref={videoRef}
-              autoPlay
-              playsInline
-              style={{ borderRadius: '10px', width: '100%', maxWidth: '600px' }}
+              style={{
+                borderRadius: '10px',
+                width: '100%',
+                maxWidth: '600px',
+                height: '480px',
+                objectFit: 'cover'
+              }}
+            />
+            <canvas
+              ref={canvasRef}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                borderRadius: '10px'
+              }}
+              width={640}
+              height={480}
             />
           </Box>
+
+          <Button
+            mt={6}
+            colorScheme="red"
+            onClick={handleStopPose}
+            isDisabled={loading}
+            size="lg"
+            width="full"
+            maxW="200px"
+          >
+            Stop Pose
+          </Button>
         </VStack>
-        <Button
-          mt={6}
-          colorScheme="red"
-          onClick={stopCamera} // Stop camera when button is clicked
-        >
-          Stop Pose
-        </Button>
       </Container>
     </Box>
   );
