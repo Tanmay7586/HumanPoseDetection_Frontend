@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import useMediaPipePose from "../hooks/useMediaPipePose";
 
 const YogaCameraPage = () => {
+
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const location = useLocation();
@@ -27,7 +28,6 @@ const YogaCameraPage = () => {
       initializePose(videoRef.current, canvasRef.current);
     }
 
-    // Cleanup function
     return () => {
       stopPose();
     };
@@ -66,7 +66,8 @@ const YogaCameraPage = () => {
                 width: '100%',
                 maxWidth: '600px',
                 height: '480px',
-                objectFit: 'cover'
+                objectFit: 'cover',
+                transform: 'scaleX(-1)' // Mirror the video feed
               }}
             />
             <canvas
@@ -77,7 +78,8 @@ const YogaCameraPage = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                borderRadius: '10px'
+                borderRadius: '10px',
+                 // Mirror the canvas to match the video
               }}
               width={640}
               height={480}
